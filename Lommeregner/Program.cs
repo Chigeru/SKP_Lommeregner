@@ -17,7 +17,7 @@ namespace Lommeregner
                 Console.WriteLine("Indtast det første tal");
                 tal1 = NumberChecker(Console.ReadLine());
 
-                Console.WriteLine("\nIndtast regne metoden (f.eks. + eller -)");
+                Console.WriteLine("\nIndtast regne metoden (f.eks. + eller -). for mere hjælp indtast \"?\"");
                 calType = CalculationType(Console.ReadLine());
 
                 
@@ -79,7 +79,7 @@ namespace Lommeregner
                 case "potens":
                     return "pow";
                 case "?":
-                    Console.WriteLine("{0,-10} {1,-20}");
+                    Console.WriteLine("Mulige regne muligheder: \n + - * / kvardratrod potens");
                     return CalculationType(Console.ReadLine());
                 default:
                     Console.WriteLine("Kunne ikke genkende den indtastede regnetype, prøv igen");
