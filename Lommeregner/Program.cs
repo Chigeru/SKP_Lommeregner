@@ -8,9 +8,9 @@ namespace Lommeregner
         {
             bool regn = true;
             string forklaring = "";
-            int tal1;
+            double tal1;
             string calType;
-            int tal2;
+            double tal2;
 
             while (regn)
             {
@@ -23,10 +23,14 @@ namespace Lommeregner
                 Console.WriteLine("\nIndtast det næste tal som der skal beregnes med");
                 tal2 = NumberChecker(Console.ReadLine());
 
-                double svar = CalculationSum(tal1, tal2, calType, out forklaring);
+                double svar = CalculationSum(tal1, calType, out forklaring, tal2);
                 Console.WriteLine($"\n{forklaring} = {svar}");
-
-
+                Console.WriteLine("Ønsker du resultatet i procent? y/n");
+                bool procent = Console.ReadLine() == "y";
+                if(procent)
+                {
+                    Console.WriteLine($"\n{svar * 100}%");
+                }
 
                 Console.WriteLine("\nLav en ny udregning? y/n");
                 regn = Console.ReadLine() == "y";
@@ -35,12 +39,14 @@ namespace Lommeregner
 
 
         }
-        public static int NumberChecker(string inputNumber)
+
+
+        static double NumberChecker(string inputNumber)
         {
-            int number = 0;
+            double number = 0;
             try
             {
-                 number = Int32.Parse(inputNumber);
+                 number = Double.Parse(inputNumber);
             } catch
             {
                 Console.WriteLine($"\"{inputNumber}\" er ikke et tal, indtast venligst et tal");
@@ -50,7 +56,7 @@ namespace Lommeregner
             return number;
         }
 
-        public static string CalculationType(string calType)
+        static string CalculationType(string calType)
         {
             switch (calType)
             {
@@ -76,36 +82,37 @@ namespace Lommeregner
             }
         }
 
-        static double CalculationSum(int a, int b, string calc, out string tempForklaring)
+        static double CalculationSum(double a, string calc, out string tempForklaring, double b = 0)
         {
             switch(calc)
             {
                 case ("+"):
+                    
                     tempForklaring = $"{a} + {b}";
-                    return a + b;
+                    return Math.Round(a + b, 3);
                 case ("-"):
                     tempForklaring = $"{a} - {b}";
-                    return a - b;
+                    return Math.Round(a - b, 3);
                 case ("*"):
                     tempForklaring = $"{a} * {b}";
-                    return a * b;
+                    return Math.Round(a * b, 3);
                 case ("/"):
                     tempForklaring = $"{a} / {b}";
-                    return a / b;
+                    return Math.Round(a / b, 3);
                 case ("sqrt"):
-                    tempForklaring = $"";
+                    tempForklaring = $"Kvadratroden af {a}";
                     return Math.Sqrt(a);
                 default:
                     tempForklaring = "der er ingen forklaring på hvad du prøver på";
                     return 0;
             }
         }
-        static int anotherNumber()
-        {
-            Console.WriteLine("\nIndtast det næste tal som der skal beregnes med");
-            return NumberChecker(Console.ReadLine());
+        //static int anotherNumber()
+        //{
+        //    Console.WriteLine("\nIndtast det næste tal som der skal beregnes med");
+        //    return NumberChecker(Console.ReadLine());
 
-        }
+        //}
 
 
     }
