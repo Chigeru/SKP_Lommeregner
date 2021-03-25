@@ -20,10 +20,9 @@ namespace Lommeregner
                 Console.WriteLine("\nIndtast regne metoden (f.eks. + eller -)");
                 calType = CalculationType(Console.ReadLine());
 
-                Console.WriteLine("\nIndtast det næste tal som der skal beregnes med");
-                tal2 = NumberChecker(Console.ReadLine());
+                
 
-                double svar = CalculationSum(tal1, calType, out forklaring, tal2);
+                double svar = CalculationSum(tal1, calType, out forklaring);
                 Console.WriteLine($"\n{forklaring} = {svar}");
                 Console.WriteLine("Ønsker du resultatet i procent? y/n");
                 bool procent = Console.ReadLine() == "y";
@@ -40,7 +39,9 @@ namespace Lommeregner
 
         }
 
+        /* ------------ METODER ---------- */
 
+        //Sørger for at brugeren har indtastet et tal
         static double NumberChecker(string inputNumber)
         {
             double number = 0;
@@ -56,6 +57,7 @@ namespace Lommeregner
             return number;
         }
 
+        //Identificerer regne metoden
         static string CalculationType(string calType)
         {
             switch (calType)
@@ -76,43 +78,56 @@ namespace Lommeregner
                     return "sqrt";
                 case "potens":
                     return "pow";
+                case "?":
+                    Console.WriteLine("{0,-10} {1,-20}");
+                    return CalculationType(Console.ReadLine());
                 default:
                     Console.WriteLine("Kunne ikke genkende den indtastede regnetype, prøv igen");
                     return CalculationType(Console.ReadLine());
             }
         }
 
-        static double CalculationSum(double a, string calc, out string tempForklaring, double b = 0)
+        //Udregninger på regnemetoderne & kalder anotherNumber hvis det er nødvendigt
+        static double CalculationSum(double a, string calc, out string tempForklaring)
         {
             switch(calc)
             {
                 case ("+"):
-                    
-                    tempForklaring = $"{a} + {b}";
-                    return Math.Round(a + b, 3);
+                    double plus = anotherNumber();
+                    tempForklaring = $"{a} + {plus}";
+                    return Math.Round(a + plus, 3);
                 case ("-"):
-                    tempForklaring = $"{a} - {b}";
-                    return Math.Round(a - b, 3);
+                    double minus = anotherNumber();
+                    tempForklaring = $"{a} - {minus}";
+                    return Math.Round(a - minus, 3);
                 case ("*"):
-                    tempForklaring = $"{a} * {b}";
-                    return Math.Round(a * b, 3);
+                    double gange = anotherNumber();
+                    tempForklaring = $"{a} * {gange}";
+                    return Math.Round(a * gange, 3);
                 case ("/"):
-                    tempForklaring = $"{a} / {b}";
-                    return Math.Round(a / b, 3);
+                    double divider = anotherNumber();
+                    tempForklaring = $"{a} / {divider}";
+                    return Math.Round(a / divider, 3);
                 case ("sqrt"):
                     tempForklaring = $"Kvadratroden af {a}";
                     return Math.Sqrt(a);
+                case ("pow"):
+                    double pow = anotherNumber();
+                    tempForklaring = $"potensen af {a} opløftet i {pow}";
+                    return Math.Pow(a, pow);
                 default:
                     tempForklaring = "der er ingen forklaring på hvad du prøver på";
                     return 0;
             }
         }
-        //static int anotherNumber()
-        //{
-        //    Console.WriteLine("\nIndtast det næste tal som der skal beregnes med");
-        //    return NumberChecker(Console.ReadLine());
 
-        //}
+        //Efterspørger et tal mere
+        static double anotherNumber()
+        {
+            Console.WriteLine("\nIndtast endnu et tal som der skal beregnes med");
+            return NumberChecker(Console.ReadLine());
+
+        }
 
 
     }
