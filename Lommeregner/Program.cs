@@ -10,7 +10,6 @@ namespace Lommeregner
             string forklaring = "";
             double tal1;
             string calType;
-            double tal2;
 
             while (regn)
             {
@@ -47,7 +46,11 @@ namespace Lommeregner
             double number = 0;
             try
             {
-                 number = Double.Parse(inputNumber);
+                if(inputNumber.ToLower() == "pi")
+                    number = Math.PI;
+                else
+                    number = Double.Parse(inputNumber);
+                 
             } catch
             {
                 Console.WriteLine($"\"{inputNumber}\" er ikke et tal, indtast venligst et tal");
@@ -60,7 +63,7 @@ namespace Lommeregner
         //Identificerer regne metoden
         static string CalculationType(string calType)
         {
-            switch (calType)
+            switch (calType.ToLower())
             {
                 case "+":
                 case "plus":
@@ -79,7 +82,12 @@ namespace Lommeregner
                 case "potens":
                     return "pow";
                 case "?":
-                    Console.WriteLine("Mulige regne muligheder: \n + - * / kvardratrod potens");
+                    Console.WriteLine("\t+ (Plus)\tLægger to tal sammen");
+                    Console.WriteLine("\t- (Minus)\tFratrækker det andet tal fra det første");
+                    Console.WriteLine("\t* (Gange)\tMultiplicerer to tal");
+                    Console.WriteLine("\t/ (Divider)\tDividerer to tal ");
+                    Console.WriteLine("\tkvadratrod \tTager kvardratroden af et enkelt tal ");
+                    Console.WriteLine("\tpotens \t\tMultiplicerer det første tal antallet af gange det andet tal henviser til");
                     return CalculationType(Console.ReadLine());
                 default:
                     Console.WriteLine("Kunne ikke genkende den indtastede regnetype, prøv igen");
@@ -95,26 +103,31 @@ namespace Lommeregner
                 case ("+"):
                     double plus = anotherNumber();
                     tempForklaring = $"{a} + {plus}";
-                    return Math.Round(a + plus, 3);
+                    return Math.Round(a + plus, 6);
                 case ("-"):
                     double minus = anotherNumber();
                     tempForklaring = $"{a} - {minus}";
-                    return Math.Round(a - minus, 3);
+                    return Math.Round(a - minus, 6);
                 case ("*"):
                     double gange = anotherNumber();
                     tempForklaring = $"{a} * {gange}";
-                    return Math.Round(a * gange, 3);
+                    return Math.Round(a * gange, 6);
                 case ("/"):
                     double divider = anotherNumber();
+                    while(divider == 0)
+                    {
+                        Console.WriteLine("Der kan desværre ikke divideres med 0, prøv et andet tal");
+                        divider = NumberChecker(Console.ReadLine());
+                    }
                     tempForklaring = $"{a} / {divider}";
-                    return Math.Round(a / divider, 3);
+                    return Math.Round(a / divider, 6);
                 case ("sqrt"):
                     tempForklaring = $"Kvadratroden af {a}";
-                    return Math.Sqrt(a);
+                    return Math.Round(Math.Sqrt(a), 6);
                 case ("pow"):
                     double pow = anotherNumber();
                     tempForklaring = $"potensen af {a} opløftet i {pow}";
-                    return Math.Pow(a, pow);
+                    return Math.Round(Math.Pow(a, pow), 6);
                 default:
                     tempForklaring = "der er ingen forklaring på hvad du prøver på";
                     return 0;
