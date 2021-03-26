@@ -79,6 +79,7 @@ namespace Lommeregner
                     return "/";
                 case "kvadratrod":
                     return "sqrt";
+                case "^":
                 case "potens":
                     return "pow";
                 case "?":
@@ -87,7 +88,7 @@ namespace Lommeregner
                     Console.WriteLine("\t* (Gange)\tMultiplicerer to tal");
                     Console.WriteLine("\t/ (Divider)\tDividerer to tal ");
                     Console.WriteLine("\tkvadratrod \tTager kvardratroden af et enkelt tal ");
-                    Console.WriteLine("\tpotens \t\tMultiplicerer det første tal antallet af gange det andet tal henviser til");
+                    Console.WriteLine("\t^ (Potens) \tMultiplicerer det første tal antallet af gange det andet tal henviser til");
                     return CalculationType(Console.ReadLine());
                 default:
                     Console.WriteLine("Kunne ikke genkende den indtastede regnetype, prøv igen");
