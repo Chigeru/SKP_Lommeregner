@@ -17,11 +17,9 @@ namespace Lommeregner
                 tal1 = NumberChecker(Console.ReadLine());
 
                 Console.WriteLine("\nIndtast regne metoden (f.eks. + eller -). for mere hjælp indtast \"?\"");
-                calType = CalculationType(Console.ReadLine());
 
-                
+                double svar = CalculationSum(tal1, Console.ReadLine(), out forklaring);
 
-                double svar = CalculationSum(tal1, calType, out forklaring);
                 Console.WriteLine($"\n{forklaring} = {svar}");
                 Console.WriteLine("Ønsker du resultatet i procent? y/n");
                 bool procent = Console.ReadLine() == "y";
@@ -40,7 +38,7 @@ namespace Lommeregner
 
         /* ------------ METODER ---------- */
 
-        //Sørger for at brugeren har indtastet et tal
+        //Sørger for at brugeren har indtastet et tal eller Pi
         static double NumberChecker(string inputNumber)
         {
             double number = 0;
@@ -60,60 +58,28 @@ namespace Lommeregner
             return number;
         }
 
-        //Identificerer regne metoden
-        static string CalculationType(string calType)
+        //Identificerer den valgte regnemetode, udregninger regnemetoderne & kalder anotherNumber hvis det er nødvendigt
+        static double CalculationSum(double a, string calc, out string tempForklaring)
         {
-            switch (calType.ToLower())
+            switch(calc.ToLower())
             {
                 case "+":
                 case "plus":
-                    return "+";
-                case "-":
-                case "minus":
-                    return "-";
-                case "*":
-                case "gange":
-                    return "*";
-                case "/":
-                case "divider":
-                    return "/";
-                case "kvadratrod":
-                    return "sqrt";
-                case "^":
-                case "potens":
-                    return "pow";
-                case "?":
-                    Console.WriteLine("\t+ (Plus)\tLægger to tal sammen");
-                    Console.WriteLine("\t- (Minus)\tFratrækker det andet tal fra det første");
-                    Console.WriteLine("\t* (Gange)\tMultiplicerer to tal");
-                    Console.WriteLine("\t/ (Divider)\tDividerer to tal ");
-                    Console.WriteLine("\tkvadratrod \tTager kvardratroden af et enkelt tal ");
-                    Console.WriteLine("\t^ (Potens) \tMultiplicerer det første tal antallet af gange det andet tal henviser til");
-                    return CalculationType(Console.ReadLine());
-                default:
-                    Console.WriteLine("Kunne ikke genkende den indtastede regnetype, prøv igen");
-                    return CalculationType(Console.ReadLine());
-            }
-        }
-
-        //Udregninger på regnemetoderne & kalder anotherNumber hvis det er nødvendigt
-        static double CalculationSum(double a, string calc, out string tempForklaring)
-        {
-            switch(calc)
-            {
-                case ("+"):
                     double plus = anotherNumber();
                     tempForklaring = $"{a} + {plus}";
                     return Math.Round(a + plus, 6);
-                case ("-"):
+                case "-":
+                case "minus":
                     double minus = anotherNumber();
                     tempForklaring = $"{a} - {minus}";
                     return Math.Round(a - minus, 6);
-                case ("*"):
+                case "*":
+                case "gange":
                     double gange = anotherNumber();
                     tempForklaring = $"{a} * {gange}";
                     return Math.Round(a * gange, 6);
-                case ("/"):
+                case "/":
+                case "divider":
                     double divider = anotherNumber();
                     while(divider == 0)
                     {
@@ -122,16 +88,27 @@ namespace Lommeregner
                     }
                     tempForklaring = $"{a} / {divider}";
                     return Math.Round(a / divider, 6);
-                case ("sqrt"):
+                case "sqrt":
+                case "kvadratrod":
                     tempForklaring = $"Kvadratroden af {a}";
                     return Math.Round(Math.Sqrt(a), 6);
-                case ("pow"):
+                case "pow":
+                case "^":
+                case "potens":
                     double pow = anotherNumber();
                     tempForklaring = $"potensen af {a} opløftet i {pow}";
                     return Math.Round(Math.Pow(a, pow), 6);
+                case "?":
+                    Console.WriteLine("\t+ (Plus)\tLægger to tal sammen");
+                    Console.WriteLine("\t- (Minus)\tFratrækker det andet tal fra det første");
+                    Console.WriteLine("\t* (Gange)\tMultiplicerer to tal");
+                    Console.WriteLine("\t/ (Divider)\tDividerer to tal ");
+                    Console.WriteLine("\tkvadratrod \tTager kvardratroden af et enkelt tal ");
+                    Console.WriteLine("\t^ (Potens) \tMultiplicerer det første tal antallet af gange det andet tal henviser til");
+                    return CalculationSum(a, Console.ReadLine(), out tempForklaring);
                 default:
-                    tempForklaring = "der er ingen forklaring på hvad du prøver på";
-                    return 0;
+                    Console.WriteLine("Kunne ikke genkende den indtastede regnetype, prøv igen");
+                    return CalculationSum(a, Console.ReadLine(), out tempForklaring);
             }
         }
 
@@ -142,7 +119,5 @@ namespace Lommeregner
             return NumberChecker(Console.ReadLine());
 
         }
-
-
     }
 }
